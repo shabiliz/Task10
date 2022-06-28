@@ -1,0 +1,96 @@
+#define THRESHOLD 45
+#define NEAR 30
+#include "NXCDefs.h"
+#define VOL 3
+
+
+
+
+
+
+ int a1;
+
+ sub homescreen()
+{
+
+ while(!ButtonPressed(BTNCENTER,1))
+{
+if(ButtonPressed(BTNRIGHT,1))
+{
+ClearScreen();
+TextOut(0,LCD_LINE2,"Input");
+Wait(500);
+a1++;
+NumOut(41,LCD_LINE6,a1);
+}
+
+if(ButtonPressed(BTNLEFT,1))
+{
+ClearScreen();
+TextOut(0,LCD_LINE2,"INPUT");
+Wait(500);
+a1--;
+NumOut(41,LCD_LINE6,a1);
+}
+}     }
+   sub movement()
+{
+int i = 1;
+ while (i<=3)
+ {
+
+  OnFwd(OUT_BC, 70);
+
+  if (SensorUS(IN_4) < NEAR )
+
+  {
+   OnFwd(OUT_BC, 70);
+  }
+  else
+  {
+   Off(OUT_BC);
+   Wait(100);
+   PlayToneEx(262,400,VOL,FALSE); Wait(500);
+   RotateMotor(OUT_BC, 60, 650);
+   i++ ;
+  }
+}   }
+       sub data()
+{
+if (a1 == 1){
+ RotateMotor(OUT_BC,90,-650);
+ Wait(100);
+  RotateMotorEx( OUT_BC, 50, 180,-100, true, true);
+  Wait(100);
+  RotateMotor(OUT_BC,90,180);
+
+}
+else if (a1 == 2){
+
+  RotateMotor(OUT_BC,90,-350);
+  Wait(100);
+  RotateMotorEx( OUT_BC, 50, 180,-100, true, true);
+   Wait(100);
+  RotateMotor(OUT_BC,90,180);
+
+}
+
+else if (a1 == 3) {
+
+RotateMotor(OUT_BC,90,-250);
+Wait(100);
+  RotateMotorEx( OUT_BC, 50, 180,-100, true, true);
+   Wait(100);
+  RotateMotor(OUT_BC,90,180);
+
+
+}   }
+task main()
+{
+SetSensorLight(IN_2);
+ SetSensorLowspeed(IN_4);
+
+homescreen();
+movement() ;
+data();
+}
